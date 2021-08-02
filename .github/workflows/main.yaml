@@ -20,6 +20,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: Docker Setup QEMU
         uses: docker/setup-qemu-action@v1.0.1
@@ -43,6 +45,7 @@ jobs:
       - name: Build and push k9s Docker image
         uses: docker/build-push-action@v2.1.0
         with:
+          context: ./k9s
           tags: |
             florianpiesche/k9s:latest
             ghcr.io/${{ github.repository_owner }}/k9s:latest
