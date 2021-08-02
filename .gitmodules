@@ -1,0 +1,3 @@
+[submodule "k9s"]
+	path = k9s
+	url = git@github.com:derailed/k9s.git
