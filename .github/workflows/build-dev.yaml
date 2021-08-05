@@ -14,10 +14,34 @@ on:
 
 env:
   PLATFORMS: linux/arm/v6,linux/arm/v7,linux/arm64/v8,linux/amd64
+  IMAGE_NAME: k9s
 
 jobs:
 
-  build-image:
+  build-only:
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Docker Setup QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Docker Setup Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build ${{ env.IMAGE_NAME }} Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./k9s
+          platforms: ${{ env.PLATFORMS }}
+          push: false
+
+  build-and-push:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
@@ -50,23 +74,15 @@ jobs:
         run: |
           echo K9S_COMMIT=$(git rev-parse --short @:./k9s) >> $GITHUB_ENV
 
-      - name: Build k9s image
-        if: github.ref != 'refs/heads/main'
-        uses: docker/build-push-action@v2
-        with:
-          context: ./k9s
-          platforms: ${{ env.PLATFORMS }}
-          push: false
-
-      - name: Build and push k9s image
+      - name: Build and push ${{ env.IMAGE_NAME }} image
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v2
         with:
           context: ./k9s
           tags: |
-            ghcr.io/${{ github.repository_owner }}/k9s:latest
-            ghcr.io/${{ github.repository_owner }}/k9s:${{ env.K9S_COMMIT }}
-            florianpiesche/k9s-server:latest
-            florianpiesche/k9s-server:${{ env.K9S_COMMIT }}
+            ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
+            ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.K9S_COMMIT }}
+            florianpiesche/${{ env.IMAGE_NAME }}:latest
+            florianpiesche/${{ env.IMAGE_NAME }}:${{ env.K9S_COMMIT }}
           platforms: ${{ env.PLATFORMS }}
           push: true
