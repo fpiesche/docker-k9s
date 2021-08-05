@@ -1,6 +1,7 @@
 # Multi-architecture k9s
 
-![build](https://github.com/fpiesche/docker-k9s/actions/workflows/main.yml/badge.svg)
+![dev](https://github.com/fpiesche/docker-k9s/actions/workflows/build-dev.yaml/badge.svg)
+![release](https://github.com/fpiesche/docker-k9s/actions/workflows/build-tags.yaml/badge.svg)
 
 The purpose of this repository is to generate multi-architecture images of [derailed/k9s](https://github.com/derailed/k9s), because the official images for k9s are only available for `amd64`.
 
