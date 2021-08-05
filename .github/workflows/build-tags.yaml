@@ -9,6 +9,7 @@ on:
       - main
     paths-ignore:
       - '**/*.md'
+  # Run on PRs except for documentation
   pull_request:
     paths-ignore:
       - '**/*.md'
