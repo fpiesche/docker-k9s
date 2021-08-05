@@ -17,7 +17,7 @@ FROM alpine:edge
 
 COPY --from=build /k9s/execs/k9s /bin/k9s
 RUN apk add --no-cache ca-certificates curl vim
-RUN echo "https://dl-cdn.alpinelinux.org//alpine/edge/testing" >> /etc/apk/repositories
+RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk add --no-cache kubectl
 
 ENV EDITOR=vim K9S_EDITOR=vim
