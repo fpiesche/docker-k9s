@@ -28,7 +28,7 @@ The purpose of this repository is to generate multi-architecture images of [dera
 
 -	**Supported architectures**:
     Each image is a multi-arch manifest for the following architectures:
-    `amd64`, `arm64`, `armv7`, `armv6`
+    `amd64`, `arm64`, `armv7`
 
 -	**Source of this description**: [Github README](https://github.com/fpiesche/docker-k9s/tree/main/README.md) ([history](https://github.com/fpiesche/docker-k9s/commits/main/README.md))
 
