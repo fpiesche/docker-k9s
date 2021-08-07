@@ -64,6 +64,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./k9s
+          build-args: |
+            CGO_ENABLED=0
           platforms: ${{ env.PLATFORMS }}
           push: false
 
