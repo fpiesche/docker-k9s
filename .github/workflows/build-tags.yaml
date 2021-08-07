@@ -59,6 +59,11 @@ jobs:
         if: env.BUILD_RELEASE == 'true'
         uses: docker/setup-buildx-action@v1
 
+      - name: Copy modified Dockerfile into k9s repo
+        run: |
+          rm ./k9s/Dockerfile
+          cp ./Dockerfile ./k9s/Dockerfile
+
       - name: Build ${{ env.IMAGE_NAME }} Docker image
         if: env.BUILD_RELEASE == 'true'
         uses: docker/build-push-action@v2
