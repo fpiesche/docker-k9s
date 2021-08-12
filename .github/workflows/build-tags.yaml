@@ -44,9 +44,6 @@ jobs:
         run: |
           # Check whether there already is a Docker image for the current tag
           SERVER_TAGS=$(curl -s https://registry.hub.docker.com/v1/repositories/${{ secrets.DOCKERHUB_USERNAME }}/k9s/tags | jq -r ".[].name") || SERVER_TAGS="none"
-          if [[ $GITHUB_EVENT_NAME == 'push' ]]; then
-            exit
-          fi
           for tag in ${SERVER_TAGS[@]}; do
             if [[ "$tag" == "${K9S_VERSION}" ]]; then
               echo "Release ${tag} has already been built."
@@ -84,6 +81,7 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Build k9s Docker image
+        if: ${{ env.BUILD_RELEASE == 'true' }}
         uses: docker/build-push-action@v2
         with:
           context: ./k9s
