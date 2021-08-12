@@ -51,6 +51,9 @@ jobs:
               break
             fi
           done
+          if [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' ]]; then
+            echo "BUILD_RELEASE=true" >> $GITHUB_ENV
+          fi
 
       - name: Copy modified Dockerfile into k9s repo
         run: |
