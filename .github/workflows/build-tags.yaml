@@ -44,16 +44,16 @@ jobs:
         run: |
           # Check whether there already is a Docker image for the current tag
           SERVER_TAGS=$(curl -s https://registry.hub.docker.com/v1/repositories/${{ secrets.DOCKERHUB_USERNAME }}/k9s/tags | jq -r ".[].name") || SERVER_TAGS="none"
+          if [[ $GITHUB_EVENT_NAME == 'push' ]]; then
+            exit
+          fi
           for tag in ${SERVER_TAGS[@]}; do
             if [[ "$tag" == "${K9S_VERSION}" ]]; then
               echo "Release ${tag} has already been built."
               echo "BUILD_RELEASE=false" >> $GITHUB_ENV
-              break
+              exit
             fi
           done
-          if [[ $GITHUB_EVENT_NAME == 'workflow_dispatch' ]]; then
-            echo "BUILD_RELEASE=true" >> $GITHUB_ENV
-          fi
 
       - name: Copy modified Dockerfile into k9s repo
         run: |
