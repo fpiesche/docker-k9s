@@ -14,11 +14,13 @@ RUN make build
 
 # -------- Assemble final image
 FROM alpine:edge
+ARG K9S_COMMIT="unknown"
 
 COPY --from=build /k9s/execs/k9s /bin/k9s
-RUN apk add --no-cache ca-certificates curl vim
+RUN apk add --no-cache ca-certificates curl vim nano ncurses
 RUN echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk add --no-cache kubectl
 
+ENV K9S_COMMIT=${K9S_COMMIT}
 ENV EDITOR=vim K9S_EDITOR=vim
 CMD [ "/bin/k9s" ]

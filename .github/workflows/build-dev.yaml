@@ -30,6 +30,7 @@ jobs:
       - name: Get current commit on k9s submodule
         run: |
           echo K9S_COMMIT=$(git rev-parse --short @:./k9s) >> $GITHUB_ENV
+          echo DATESTAMP=$(date +%Y.%m.%d) >> $GITHUB_ENV
 
       - name: Copy modified Dockerfile into k9s repo
         run: |
@@ -65,10 +66,13 @@ jobs:
           context: ./k9s
           build-args: |
             CGO_ENABLED=0
+            K9S_COMMIT=${{ env.K9S_COMMIT }}
           tags: |
             ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:dev
             ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.K9S_COMMIT }}
+            ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.DATESTAMP }}
             ${{ secrets.DOCKERHUB_USERNAME || 'nobody' }}/${{ env.IMAGE_NAME }}:dev
             ${{ secrets.DOCKERHUB_USERNAME || 'nobody' }}/${{ env.IMAGE_NAME }}:${{ env.K9S_COMMIT }}
+            ${{ secrets.DOCKERHUB_USERNAME || 'nobody' }}/${{ env.IMAGE_NAME }}:${{ env.DATESTAMP }}
           platforms: ${{ env.PLATFORMS }}
           push: ${{ env.PUSH_IMAGE }}
