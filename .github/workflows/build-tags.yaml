@@ -43,7 +43,7 @@ jobs:
         if: ${{ env.PUSH_IMAGE == 'true' }}
         run: |
           # Check whether there already is a Docker image for the current tag
-          SERVER_TAGS=$(curl -s https://registry.hub.docker.com/v1/repositories/${{ secrets.DOCKERHUB_USERNAME }}/k9s/tags | jq -r ".[].name") || SERVER_TAGS="none"
+          SERVER_TAGS=$(curl -s https://registry.hub.docker.com/v2/repositories/${{ secrets.DOCKERHUB_USERNAME }}/k9s/tags | jq -r ".[].name") || SERVER_TAGS="none"
           for tag in ${SERVER_TAGS[@]}; do
             if [[ "$tag" == "${K9S_VERSION}" ]]; then
               echo "Release ${tag} has already been built."
