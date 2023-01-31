@@ -61,7 +61,7 @@ jobs:
           password: ${{ secrets.GHCR_TOKEN }}
 
       - name: Build ${{ env.IMAGE_NAME }} image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./k9s
           build-args: |
