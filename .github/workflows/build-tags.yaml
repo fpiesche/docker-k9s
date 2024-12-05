@@ -82,7 +82,7 @@ jobs:
 
       - name: Build k9s Docker image
         if: ${{ env.BUILD_RELEASE == 'true' }}
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./k9s
           build-args: |
